@@ -1,0 +1,10 @@
+# Lets take part of the above extracted article
+docu = nlp('''The AbC-19 rapid antibody test is an immunological test for COVID-19 exposure developed by
+the UK Rapid Test Consortium and manufactured by Abingdon Health. It uses a lateral flow test to determine
+whether a person has IgG antibodies to the SARS-CoV-2 virus that causes COVID-19. The test uses a single
+drop of blood obtained from a finger prick and yields results in 20 minutes.\n\nSee also\nCOVID-19 rapid
+antigen test''')
+ 
+for tokn in docu:
+   print(tokn.text, "---", tokn.dep_)
+python -m spacy download en

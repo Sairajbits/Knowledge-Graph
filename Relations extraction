@@ -1,0 +1,20 @@
+def obtain_relation(sent):
+  
+   doc = nlp(sent)
+  
+   matcher = Matcher(nlp.vocab)
+  
+   pattern = [{'DEP':'ROOT'},
+           {'DEP':'prep','OP':"?"},
+           {'DEP':'agent','OP':"?"}, 
+           {'POS':'ADJ','OP':"?"}]
+  
+   matcher.add("matching_1", None, pattern)
+  
+   matcher = matcher(doc)
+   h = len(matcher) - 1
+  
+   span = doc[matcher[h][1]:matcher[h][2]]
+  
+   return (span.text)
+relations = [obtain_relation(j) for j in tqdm(data['text'][:800])]

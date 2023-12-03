@@ -1,0 +1,57 @@
+def extract_entities(sents):
+   # chunk one
+   enti_one = ""
+   enti_two = ""
+  
+   dep_prev_token = "" # dependency tag of previous token in sentence
+  
+   txt_prev_token = "" # previous token in sentence
+  
+   prefix = ""
+   modifier = ""
+  
+  
+  
+   for tokn in nlp(sents):
+       # chunk two
+       ## move to next token if token is punctuation
+      
+       if tokn.dep_ != "punct":
+           #  check if token is compound word or not
+           if tokn.dep_ == "compound":
+               prefix = tokn.text
+               # add the current word to it if the previous word is 'compound’
+               if dep_prev_token == "compound":
+                   prefix = txt_prev_token + " "+ tokn.text
+                  
+           # verify if token is modifier or not
+           if tokn.dep_.endswith("mod") == True:
+               modifier = tokn.text
+               # add it to the current word if the previous word is 'compound'
+               if dep_prev_token == "compound":
+                   modifier = txt_prev_token + " "+ tokn.text
+                  
+           # chunk3
+           if tokn.dep_.find("subj") == True:
+               enti_one = modifier +" "+ prefix + " "+ tokn.text
+               prefix = ""
+               modifier = ""
+               dep_prev_token = ""
+               txt_prev_token = ""
+              
+           # chunk4
+           if tokn.dep_.find("obj") == True:
+               enti_two = modifier +" "+ prefix +" "+ tokn.text
+              
+           # chunk 5
+           # update variable
+           dep_prev_token = tokn.dep_
+           txt_prev_token = tokn.text
+          
+   return [enti_one.strip(), enti_two.strip()]
+extract_entities("The AbC-19 rapid antibody test is an immunological test for COVID-19 exposure developed by the UK Rapid Test")
+['AbC-19 rapid antibody test', 'COVID-19 UK Rapid Test']
+pairs_of_entities = []
+for i in tqdm(data['text'][:800]):
+   pairs_of_entities.append(extract_entities(i))
+pairs_of_entities[36:42]

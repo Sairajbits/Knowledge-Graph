@@ -1,0 +1,3 @@
+run['graphs/all_in_graph'].upload('graph.png')
+run['graphs/filtered_relations'].upload('info.png')
+run['graphs/filtered_relations2'].upload('links.png')

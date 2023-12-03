@@ -1,0 +1,22 @@
+# subject extraction
+source = [j[0] for j in pairs_of_entities]
+
+#object extraction
+target = [k[1] for k in pairs_of_entities]
+
+data_kgf = pd.DataFrame({'source':source, 'target':target, 'edge':relations})
+# Create DG from the dataframe
+graph = ntx.from_pandas_edgelist(data_kgf, "source", "target",
+                         edge_attr=True, create_using=ntx.MultiDiGraph())
+# plotting the network
+plot.figure(figsize=(14, 14))
+posn = ntx.spring_layout(graph)
+ntx.draw(graph, with_labels=True, node_color='green', edge_cmap=plot.cm.Blues, pos = posn)
+plot.show()
+graph = ntx.from_pandas_edgelist(data_kgf[data_kgf['edge']=="Information from"], "source", "target",
+                         edge_attr=True, create_using=ntx.MultiDiGraph())
+ 
+plot.figure(figsize=(14,14))
+pos = ntx.spring_layout(graph, k = 0.5) # k regulates the distance between nodes
+ntx.draw(graph, with_labels=True, node_color='green', node_size=1400, edge_cmap=plot.cm.Blues, pos = posn)
+plot.show()
